@@ -74,7 +74,7 @@ namespace Plugin {
         Config config;
         config.FromString(_service->ConfigLine());
 
-        _probe = new Probe(_service->Accessor(), config.TTL.Value(), service->Model());
+//        _probe = new Probe(_service->Accessor(), config.TTL.Value(), service->Model());
         Core::JSON::ArrayType<Core::JSON::EnumType<PluginHost::ISubSystem::subsystem>>::ConstIterator eventListIterator(static_cast<const Config&>(config).SubSystems.Elements());
         SubSystems(eventListIterator);
 
@@ -107,8 +107,8 @@ namespace Plugin {
             subSystems->Unregister(&_systemInfoReport);
         }
 
-        delete _probe;
-        _probe = nullptr;
+//        delete _probe;
+//        _probe = nullptr;
 
         _service->Unregister(&_systemInfoReport);
 
@@ -259,12 +259,12 @@ namespace Plugin {
         } else if (index.Current() == _T("Discovery")) {
             Core::ProxyType<Web::JSONBodyType<PluginHost::MetaData>> response(jsonBodyMetaDataFactory.Element());
 
-            Probe::Iterator index(_probe->Instances());
-
-            while (index.Next() == true) {
-                PluginHost::MetaData::Bridge newElement((*index).URL().Text(), (*index).Latency(), (*index).Model(), (*index).IsSecure());
-                response->Bridges.Add(newElement);
-            }
+//            Probe::Iterator index(_probe->Instances());
+//
+//            while (index.Next() == true) {
+//                PluginHost::MetaData::Bridge newElement((*index).URL().Text(), (*index).Latency(), (*index).Model(), (*index).IsSecure());
+//                response->Bridges.Add(newElement);
+//            }
 
             result->Body(Core::proxy_cast<Web::IBody>(response));
         } else if (index.Current() == _T("SubSystems")) {
@@ -368,11 +368,11 @@ namespace Plugin {
                     }
                 }
             } else if (index.Current() == _T("Discovery")) {
-                ASSERT(_probe != nullptr);
-                Core::URL::KeyValue options(request.Query.Value());
-                uint8_t ttl = options.Number<uint8_t>(_T("TTL"), 0);
-
-                _probe->Ping(ttl);
+//                ASSERT(_probe != nullptr);
+//                Core::URL::KeyValue options(request.Query.Value());
+//                uint8_t ttl = options.Number<uint8_t>(_T("TTL"), 0);
+//
+//                _probe->Ping(ttl);
 
                 result->ErrorCode = Web::STATUS_OK;
                 result->Message = _T("Discovery cycle initiated");
